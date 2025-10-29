@@ -18,7 +18,7 @@ def create_post():
                          text=form.text.data,
                          user_id=current_user.id)
         db.session.add(blog_post)
-        db.session.commit
+        db.session.commit()
 
         flash('Blog post created')
         return redirect(url_for('core.index'))
@@ -40,15 +40,15 @@ def update(blog_post_id):
 
     if blog_post.author != current_user:
         abort(403)
-    form = BlogPostForm
+    form = BlogPostForm()
 
     if form.validate_on_submit():
 
-        blog_post.title = BlogPost(title=form.title.data)
-        blog_post.text = BlogPost(text=form.text.data)
+        blog_post.title = form.title.data
+        blog_post.text = form.text.data
 
         db.session.add(blog_post)
-        db.session.commit
+        db.session.commit()
 
         flash('Blog post updated')
         return redirect(url_for('blog_posts.blog_post',blog_post_id=blog_post.id))
@@ -56,7 +56,7 @@ def update(blog_post_id):
         form.title.data = blog_post.title
         form.text.data = blog_post.text
 
-    return render_template('create_post.html',title='Updating')
+    return render_template('create_post.html',title='Updating', form=form)
 
 
 @blog_posts.route('/<int:blog_post_id>/delete',methods=['GET','POST'])
@@ -67,7 +67,7 @@ def delete_post(blog_post_id):
         abort(403)
     
     db.session.delete(blog_post)
-    db.session.commit
+    db.session.commit()
 
     flash('Blog Post Deleted')
     return redirect(url_for('core.index'))

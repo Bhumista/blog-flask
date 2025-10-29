@@ -9,6 +9,10 @@ def index():
     blog_posts = BlogPost.query.order_by(BlogPost.date.desc()).paginate(page=page,per_page=5)
     return render_template('index.html',blog_posts=blog_posts)
 
+@core.route('/home')
+def home():
+    return render_template('logout_home.html')
+
 @core.route('/info')
 def info():
     return render_template('info.html')
